@@ -63,7 +63,7 @@ eg: 更新此句
 
 ### 关于下载m3u8完成后,下载管理目录的视频扫描
 浏览器的文件扫描中,并未包含已下载的m3u8文件
-原因: 视频扫描是查询系统数据库方式,系统指定的uri为 MediaStore.Video.Media.EXTERNAL_CONTENT_URI
+原因: 视频扫描是查询系统数据库方式,系统指定的uri为 MediaStore.Video.Media.EXTERNAL_CONTENT_URI `content://media/external/video/media`
 FileOperationThread#findVideoList
 而系统本身不是不m3u8文件,这一点可在手机文件管理器下确认,打开不以视频的方式
 
