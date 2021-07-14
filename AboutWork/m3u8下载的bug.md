@@ -133,7 +133,7 @@ m3u8的下载url不是一成不变的，坑！所以不能通过查找插入的u
     }
 
     private static boolean isNeedUpdateM3u8Name(Context context, boolean isM3u8, String fileName){
-        // url不存在,但m3u8切片的存在(某些m3u8名称相同,但url不同)需对此m3u8重命名
+        // url不存在，但m3u8切片的存在(某些m3u8名称相同,但url不同)需对此m3u8重命名
         // 示例网址http://www.g5ds.com/goulb/rihan/  对应bug编号:1936166
         return isM3u8 && !TextUtils.isEmpty(readPieceVideoPath(context, fileName));
     }
@@ -145,4 +145,15 @@ m3u8的下载url不是一成不变的，坑！所以不能通过查找插入的u
 values.put(Downloads.COLUMN_EXTRA_TEXT4, c.getString(c.getColumnIndex(Downloads.COLUMN_EXTRA_TEXT4)));
 
 ```
+- 07-14
+
+跟进bug 1936166 基于上述的修改，存在一个问题。
+url不存在，但m3u8切片的存在时，才重命名，存在一个问题:
+下载任务已开启，但m3u8下载路径或未完成创建，导致`重命名的前提条件`（m3u8文件目录存在时）失效
+技术方案：可通过已入库的名称来判断
+产品认为‘下载名称用户不敏感’
+经三方沟通，逻辑简化处理为：
+只要是m3u8文件的下载，`isM3u8`统一在名称后拼接原始url的haseCode
+影响范围：
+m3u8文件下载名称
 
