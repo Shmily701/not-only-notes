@@ -75,3 +75,74 @@ FileOperationThread#findOtherFileList 指定uri为 `content://media/external/fil
 
 
 
+### 关于m3u8下载的问题
+- 07-12
+fixbug 1936166
+m3u8 取tab title
+
+- 07-13
+1936166 的修改通过tab title来判断，但这样影响范围太大，有许多不必要的重命名。
+问题背景:
+m3u8的下载url不是一成不变的，坑！所以不能通过查找插入的url来确定m3u8任务下载的唯一性，所以`使用m3u8文件下载路径来判断`
+但对于bug描述中的网址http://www.g5ds.com/goulb/rihan/  
+文件名取的是tab 的title 所以同一系列eg"日韩电影" 获得的名称相同，（但实际却是不同的下载资源）。
+
+由此可见，原有的`使用m3u8文件下载路径来判断`是不可靠的
+于是只能另辟蹊径，则衍生出新的方案
+`通过extra_text来存储原始url` 的方案来确定唯一性，具体修改如下：
+
+- 插入一条数据时 
+```
+    // m3u8的下载url会变更,无法通过url来确认唯一性,所以添加extra_text4存储原始url
+    if (PieceVideoParser.isPlayListFile(filename)) {
+        LogUtil.d("DownloadM3u8", url);
+        LogUtil.d("DownloadM3u8", filename);
+        values.put(Downloads.COLUMN_EXTRA_TEXT4,url);
+    }
+```
+
+- 查询数据
+```
+    Cursor cursor = null;
+    boolean isM3u8 = PieceVideoParser.isPlayListFile(name);
+    try {
+        String where = "";
+        if (!isM3u8) {
+            where = Downloads.COLUMN_URI + " = ? " + " and ("
+                    + Downloads.COLUMN_TITLE + " = ? or "
+                    + Downloads.COLUMN_FILE_NAME_HINT + " = ? )";
+            cursor = context.getContentResolver().query(
+                Downloads.CONTENT_URI, null, where, new String[] { url, name, name }, null);
+        }
+        else {
+            where = Downloads.COLUMN_EXTRA_TEXT4 + " = ? "; //COLUMN_EXTRA_TEXT4 此字段浏览器未使用
+            cursor = context.getContentResolver().query(
+                    Downloads.CONTENT_URI, null, where, new String[]{url}, null);
+        }
+    } catch (Exception ignored) {}
+
+    boolean urlInDB = (cursor != null && cursor.moveToFirst() && cursor.getCount() > 0);
+    if(urlInDB) {
+        //can't download and show reDownload hint
+    }
+    else {
+        if (isNeedUpdateM3u8Name(context,isM3u8,name)) {
+            name = updateM3u8FileDirName(url,name);
+        }
+        ...
+    }
+
+    private static boolean isNeedUpdateM3u8Name(Context context, boolean isM3u8, String fileName){
+        // url不存在,但m3u8切片的存在(某些m3u8名称相同,但url不同)需对此m3u8重命名
+        // 示例网址http://www.g5ds.com/goulb/rihan/  对应bug编号:1936166
+        return isM3u8 && !TextUtils.isEmpty(readPieceVideoPath(context, fileName));
+    }
+    // 根据特定规则对m3u8更名，竞品QQ浏览器也是如此处理的
+
+```
+- 重新下载
+```
+values.put(Downloads.COLUMN_EXTRA_TEXT4, c.getString(c.getColumnIndex(Downloads.COLUMN_EXTRA_TEXT4)));
+
+```
+
