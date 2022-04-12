@@ -1,0 +1,21 @@
+{
+  "name": "Getting Started Example",
+  "version": "1.0",
+  "permissions": ["storage", "activeTab","declarativeContent","https://developer.chrome.com/docs/apps/app_external/"],
+  "description": "Build an Extension!",
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+
+   "page_action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "images/_16.png",
+      "32": "images/_32.png",
+      "48": "images/_48.png",
+      "128": "images/_128.png"
+    }
+  },
+  "manifest_version": 2
+}
