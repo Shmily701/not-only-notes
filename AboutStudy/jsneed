@@ -1,0 +1,85 @@
+
+hippy 相关的
+
+hippy使用清单
+
+
+
+1. 组件名称
+2. jsbundle 内置或扫码
+3. 加载完成loadsuccess 后才可发送事件sendEvent，终端调用hippy端
+4. hippy端调用终端: HippNativeMethod的注解方式
+5. 未挂载在viewTree上的hippyview也可以发送接收事件吗？ 待与前端联调测试
+
+
+问题的排查
+
+hippyload 
+
+双端的交互 
+
+
+关于与hippy端沟通的问题处理：
+  胶水层添加log 
+  关于这里提到的胶水层
+  我理解是  QBHippyEngineProxyHelper   QBNativeProxy 打log 或者断点确认 
+  
+  提供给hippy的能力
+
+  hippyview初始化告知前端--将属性参数传递即可
+  调用hippy的方法
+
+  提供给hippy的view  ===== 使用最新的方式   不需要业务进行注册，只需要使用框架，但一定要明确业务标识，框架就会识别到，并加载业务，eg：小说或搜索。
+  前端的js加载起来时，才会call到这里来（用户无需注册）
+
+
+  通过ability与module 两种方式 都可以与前端交互  
+  实质  ability也是基于module实现的
+  二者区别在于  
+  ability是run在hippy容器里的，是由上下文的。
+  而hippy的module里，没有上下文，只能做简单的收发交互。它不知在哪个容器里面run。很轻量级的。
+
+
+
+前端的jsbudle 
+
+- 需要看视频
+
+业务与框架的交互
+业务如何把数据给到框架 
+框架如果回调业务
+
+
+
+# 工具链接 
+收集常用的工具，排查问题的链接 很重要
+大同sdk链接  
+
+
+关于现场恢复的代码框架讲解
+
+
+关于内置文档的更新
+
+灯塔使用 
+关于灯塔数据查看与登记
+
+
+ 
+
+
+便捷的调试方法
+
+1. 修改内存中的值 快速验证结果
+
+2. 通过adb shell am set-debug-app -w 进程名
+
+3. 
+
+
+
+
+------------
+extension 的方式  由前端加载jsbundle后   主动调用业务的实现   无需主动注册  （机制有extension框架的保证   注册的filter）
+
+
