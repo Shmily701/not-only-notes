@@ -39,17 +39,17 @@ private fun initHandler() {
 造成内存泄漏的原因：
 1. 单例造成的内存泄漏  避免方式：单例持有上下文不要使用Activity 而需要使用application 
 2. 非静态内部类持有外部类的引用 （内部类的构造函数中会传入外部类的实例）// 解决方案: 静态内部类
-3. Handler引发的内存写了，在Message中持有mhandler的应用，msg的target   而mhandler是Activity的非静态内部类的实例，持有Activity的引用，这里间接导致了内存泄漏，同2  // 解决方案：静态内部类+弱引用
+3. Handler引发的内存泄漏，在Message中持有mhandler的应用，msg的target   而mhandler是Activity的非静态内部类的实例，持有Activity的引用，这里间接导致了内存泄漏，同2  // 解决方案：静态内部类+弱引用
 4. 异步任务导致的内存泄露  
 5. 资源未关闭或者未释放造成的内存泄漏 io File cursor 
 6. 注册，但未反注册
 7. 集合类的泄露 // 静态全局final
 8. webView内存泄漏 // 
 让onDetachedFromWindow先走，在主动调用destroy()之前，把webview从它的parent上面移除掉。
-9. HashMap 引发的内存写了，当想要使用对象作为HashMap的key时，可以考虑使用不可变对象作为HashMap的key，如常用的String类型，或者确保使用不可变的成员属性来生成hashcode 因为put时，只有key相同，才会覆盖
+9. HashMap 引发的内存泄漏，当想要使用对象作为HashMap的key时，可以考虑使用不可变对象作为HashMap的key，如常用的String类型，或者确保使用不可变的成员属性来生成hashcode 因为put时，只有key相同，才会覆盖
 
 10. Bitmap 统一图片库 Bitmap.createBitmap与BitmapFactory相关接口 收拢 采样率 压缩 图片格式
-更改Bitmap.Config格式。 
+更改Bitmap.Config格式。  通过BitmapFactory.Options来缩放图片，主要是用到了它的inSampleSize参数，即采样率
 统一监控  图片超出屏幕 Canvas.clip 剪裁 等
 
 
@@ -72,5 +72,15 @@ mWebView.destroy();
 
 
 debug 开发者模式，打开一个悬浮窗，显示内存 cpu的情况
-内存监控 runtime.memory 相关 
-GC 监控 debug.global
+内存监控API runtime.memory 相关 
+GC 监控API debug.global
+
+
+Today
+#### 内存优化方案 从以下两个角度
+1. 内存创建与释放的时机
+
+
+2. 减少不必要对象创建方向
+
+
