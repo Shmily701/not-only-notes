@@ -22,6 +22,8 @@ UI优化
 先从原理的角度上去阐述卡顿的原因，与方案策略
 1. 减少布局层级
    原理：viewGroup与view在测量布局绘制三个维度对比图  
+   ![avatar](../png/layoutTime.webp)
+   
    工具：layoutInspect 查看布局层级 
    方法
    1. view的合并
