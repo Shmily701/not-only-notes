@@ -77,8 +77,8 @@ HTTP+加密+认证+完整性保护=HTTPS
 
 #### native崩溃栈的查看与处理   
 1. 「拿到崩溃栈」tombstones文件，有native崩溃信息 
-2. 「解析崩溃栈」带symbols信息的so文件，symbols用来解析堆栈 
-3. 「分析崩溃栈」工具名称  addr2line ndk-stack 对堆栈进行分析
+2. 「解析堆栈」带symbols信息的so文件，symbols用来解析堆栈 
+3. 「分析堆栈」工具名称  addr2line ndk-stack 对堆栈进行分析
 
 当发生native崩溃时，会在目录`/data/tombstones/`下生成tombstone文件，文件中也会包含此处logcat中输出的native崩溃信息。
 带symbols信息的so
