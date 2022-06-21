@@ -46,39 +46,45 @@ LeakCanary使用Shark解析分析.hprof文件，查找出阻止泄漏对象被�
 
 `LeakCanary特点`
 实时监控 在Activity 或者Fragment destory 后，可检测Activity和Fragment是否被回收，以此判断它们是否存在泄露的情况
-hprof文件剪裁 通过将所有基本类型数组替换为空数组（大小不变）
+- hprof文件剪裁 通过将所有基本类型数组替换为空数组（大小不变）
 dump操作 因调用Debug.dumpHprofData()而带来的卡顿阻塞
 
-缺点 hprof文件过大，导致传输失败率高。
+缺点 hprof文件过大，导致传输失败率高，剪裁方法[将所有基本类型数据替换为空数据]。
 因对性能影响较大，适用于开发环境。
 优点 LeakCannary泄漏时展示的数据更加直观，方便问题的定位。
 		
 `微信的Matrix`
 - 监控原理 基于LeakCanary二次开发，监控原理一致
-- 相比LeakCanary 
-    1. 增加了配置选项：根据不同的环境，配置不同的dump模式，及检测时间间隔；
-    2. 增加了误报优化
-    > 1. 支持Bitmap重复检测。[在剪裁hprof文件时，保留Bitmap，对 Bitmap的buffer数组做一次MD5操作来判断是否重复。]
-    > 2. 多次检测相同的可疑对下，才认为泄露对象。
+- 相比LeakCanary
+    - 监控的优化
+    > 1. 增加了配置选项：根据不同的环境，配置不同的dump模式、配置检测时间间隔；
+    > 2. 增加了误报优化：多次检测相同的可疑对下，才认为泄露对象。
+    > 3. 支持Bitmap重复检测。[在剪裁hprof文件时，保留Bitmap，对 Bitmap的buffer数组做一次MD5操作来判断是否重复。]
 
-- hprof文件裁剪 剪除`部分字符串`和`Bitmap以外实例对象`中的`buffer数组`，裁剪收益可观。
-- dump操作 因调用Debug.dumpHprofData()而带来的卡顿阻塞
+- hprof文件裁剪优化
+    > 1. 剪除`部分字符串`和`除Bitmap以外实例对象`中的buffer数组，裁剪收益可观。
+      重复检测Bitemp机制：对Bitmap的buffer数组做一次MD5操作来检测是否重复。
 
-dump操作卡顿阻塞的问题根源：查看native代码可见，在进行Dump操作之前，会构造ScopedSuspendAll 对象，用来暂停所有的线程，然后再析构方法中恢复所有的线程。
+- 未解决的问题：dump操作 因调用Debug.dumpHprofData()而带来的卡顿阻塞
+
+`dump操作卡顿阻塞的问题根源` 查看native代码可见，在进行Dump操作之前，会构造ScopedSuspendAll 对象，用来暂停所有的线程，然后再析构方法中恢复所有的线程。
 
 `美团的Probe`
 非开源
+- hprof有较大区别
+    > 1. 裁剪的区别
+      LeakCanary、Matrix剪裁：将原始hprof文件dump出，数据过滤，再重新写入新的hprof文件。而Probe则通过native hook虚拟机写入hprof文件的操作，先进行数据过滤，最终生成的hprof文件是裁剪后的。
+      经分析，得知hprof文件大小与Instance数量正相关，于是Probe对此做了计算压缩
+    > 2. 分析 相同实例，仅增加计数，而不保存实例。计算压缩+补偿逻辑
+    支持所有对象的内存泄露检测(except原始类型)。理论支持：RetainSize越大则对内存越大，是最有可能造成OOM的元凶。
 
 `快手的KOOM`
 解决dumpHprofData方法阻塞问题
-解决方案：fork一个子进程，基于Copy-On-Write机制，在内存发送写入操作时，子进程拥有父进程的内存副本，再在子进程去执行 dumpHprofData 方法，而父进程则可以正常继续运行，在执行完dumpHprofData 方法后，直接退出关闭子进程，释放资源。
-
-dump 
-
-
+解决方案：fork一个子进程(基于Copy-On-Write机制，在内存发生写入操作时，子进程拥有父进程的内存副本)，在子进程去执行 dumpHprofData 方法，而父进程则可以正常继续运行，在执行完dumpHprofData 方法后，直接退出关闭子进程，释放资源。
+子进程默认拥有父进程数据的拷贝(二者共享内存空间)
+`将主进程调用dumpHprofData 方法阻塞的时间，优化到fork出的子进程耗时时间`
 
 利用AndroidStudio的Lint静态扫描潜在的内存泄漏
-
 
 工具使用
 https://www.cnblogs.com/andy-songwei/p/11832280.html
@@ -98,3 +104,34 @@ Android中最常见的OOM就是Java堆内存不足，对于堆内存不足导致
 
 在得到内存快照文件之后，我们有两种思路，一种想法是直接将HPROF文件回传到服务器，我们拿到文件后就可以使用分析工具进行分析。另一种想法是在用户手机上直接分析HPROF文件，将分析完得到的分析结果回传给服务器。但这两种方案都存在着一些问题，下面分别介绍我们在这两种思路的实践过程中遇到的挑战和对应的解决方案。
 
+- [[【内存收集】bitmap-mbuffer.html]]
+- [[doc_手机浏览器_android_需求技术讲解_sogouapm上报数据解析 - 搜狗商业平台事业部技术团队]]
+ 操作一遍加深印象！！！
+
+ 内存泄漏的bug:
+http://cynthia.sogou-inc.com/taskManagement.html?operation=read&taskid=1916905&templateId=1091959
+排查更多信息:
+http://kibana.inf.sogou/s/appmonitor-browser-android/goto/2152071476b3473b974112d26bebc492
+
+1. leak_parse  
+     http://admin.mbrowser-test.sogou-inc.com/    
+     biz_uuid:  7af0971096a511eb99b0ecf4bbe0aab8
+     
+###      1. HomeView.mUnscaledDrawingCache
+         view构建缓存,缓存bitmap对象
+         步骤
+         1. setDrawingCacheEnabled
+         2. buildDrawingCache
+         3. getDrawingCache
+       大部分view如果没有设置setDrawingCacheEnabled(true);来启用View的DrawingCache功能的话，那默认是不启用
+     1. TitleBarController.mTitlebarEditPopupView
+
+内存的问题分为溢出与泄漏两种:
+1. 泄漏，无用的对象依然与GC Root 之间有可达路径，导致GC时无法释放，小则是对象，大则Activity,Fragment 
+可以从代码层面排查，避免单例，静态，非静态内部类等老生常谈的问题
+工具可用Android Studio
+内存泄漏问题可以通过memory profiler来排查
+
+   
+   
+   
