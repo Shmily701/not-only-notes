@@ -1,0 +1,27 @@
+
+
+正则表达式需预编译
+在使用正则表达式时，利用好其预编译功能，可以有效加快正则匹配速度。 不要在方法体内定义：Pattern pattern = Pattern.compile(规则);
+
+entrySet()
+
+Collection.isEmpty() 实现的时间复杂度都是 O(1)
+一般的字符串拼接在编译期 Java 会进行优化，但是在循环中字符串拼接， Java 编译期无法做到优化，所以需要使用 StringBuilder 进行替换。
+单个字符应该使用char而非String
+
+Java 7 中引入了 try-with-resources 语句，该语句能保证将相关资源关闭，优于原来的 try-catch-finally 语句，并且使程序代码更安全更简洁。  看Effective Java
+
+返回空数组和空集合而不是 null
+所有的相同类型的包装类对象之间值的比较，全部使用equals方法比较
+
+高度注意Map类集合K/V能不能存储null值的情况
+集合类	Key	Value	Super	说明
+Hashtable	不允许为null	不允许为null	Dictionary	线程安全
+ConcurrentHashMap	不允许为null	不允许为null	AbstractMap	锁分段技术（JDK8:CAS）
+TreeMap	不允许为null	允许为null	AbstractMap	线程不安全
+HashMap	允许为null	允许为null	AbstractMap	线程不安全
+
+不要在foreach循环里进行元素的remove或add操作。remove元素请使用Iterator方式，如果并发操作，需要对Iterator对象加锁。
+
+fall through 注释：有意执行 case 1 case 2 
+
