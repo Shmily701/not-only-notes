@@ -1,0 +1,95 @@
+flutter笔记
+特性
+1. 热重载，且保留状态
+应用程序继承了 StatelessWidget，这将会使应用本身也成为一个widget。 在Flutter中，大多数东西都是widget，包括对齐(alignment)、填充(padding)和布局(layout) 这么看来，material library是一个常用的库。
+
+资源管理
+pubspec文件管理Flutter应用程序的assets(资源，如图片、package等)
+
+
+问题记录：
+
+更新flutter2后，由于现在很多包都还不支持空安全特性，所以会无法运行项目，报错如下：
+Cannot run with sound null safety,because the following dependencies don't support null safety:
+- package:english_words
+...
+现阶段无解决方案，可等待支持空安全版本，或者回滚flutter版本到2之前。
+依赖版本可以在此查询 `https://pub.flutter-io.cn/packages?`
+
+无状态与有状态的概念？
+无状态是final的意思吗？
+虽然MyApp是一个无状态的widget，但是它内部可以包含，有状态的widget。这个理解对吗？
+
+ListView的item的布局是何时完成的？// 回答，构造完itemBuilder的最后一步，返回return Widget
+
+ListView的builder工厂构造函数允许您按需建立一个懒加载的列表视图
+以下划线（_）开头，在Dart语言中使用下划线前缀标识符，会强制其变成私有的。
+
+在Flutter中，由导航器管理其路由栈。
+
+
+
+提示: 在Flutter的响应式风格的框架中，调用setState() 会为State对象触发build()方法，从而导致对UI的更新
+
+
+网络请求的三种用法。
+生命周期
+
+固定写法：
+
+入口的固定写法
+
+刷新数据，通过setState来触发构建build
+
+有状态组件的固定写法。
+
+在inteState()里做初始化
+
+listView的写法
+index 与 itemBuilder
+构造出itemBuilder即构造出了item ，1. 先构造数据   2. 构造widget，并return widget（当然也有一些已经写好的Widget，可直接使用ListTile)
+
+
+返回容器：{} 内部构造内容
+return Container{
+	//容器内部
+}
+
+return Container();  //返回空容器 
+
+async/await 的使用  3.10异步支持
+使用async函数和表达式await来实现异步操作。二者结合使用的，await可以将一个异步操作，写成同步的样子：
+```
+fileOperate () async{
+	var file = await readFile();	
+}
+
+```
+Flutter的异步操作称为： asynchronous
+
+必须在一个使用了async关键字标记后的函数中使用await表达式：如果使用await表达式，需要在函数部分添加async的修饰。
+
+flutter可以设置参数默认值，同kotlin/C++。
+flutter所有函数都有返回值，未指定则返回null，没有返回值得函数，由系统添加隐士return语句。
+运算符
+绝大多数都同java运算符
+as 类型转换  
+is 类似java的instanceof
+使用ad运算符进行类型转换时，可以使用is判断下。
+级联操作：  
+类似java的构造者模式的链式操作，对一个对象执行一系列的操作。java是一个. Dart语言的级联操作是两个点..
+Dart语言中，StringBuffer的write同java的append
+异常处理
+可以捕获+堆栈跟踪
+```
+try {
+	
+} on Exception catch(e) {
+	print('Exception details:\n $e');
+} catch(e,s) {
+	prnt('Exception details\n $e')	
+	prnt('Stack trace: \n $s')	
+}
+```
+
+flutter v 

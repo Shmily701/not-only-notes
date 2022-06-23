@@ -1,0 +1,138 @@
+JavaScript笔记
+创建好HTML和JavaScript文件，用浏览器打开，遇到的问题：
+由于浏览器的安全限制，以file://开头的地址无法执行如联网等JavaScript代码，最终，还是需要架设一个Web服务器，
+然后以http://开头的地址来正常执行所有JavaScript代码。
+
+
+NaN这个特殊的Number与所有其他值都不相等，包括它自己：
+
+NaN === NaN; // false
+唯一能判断NaN的方法是通过isNaN()函数：
+
+isNaN(NaN); // true
+
+js的数组超简单 这样写 var arr = [1, 2, 3.14, 'Hello', null, true];
+
+对象
+JavaScript的对象是一组由键-值组成的无序集合，外形很像Json，用法接近Java中对象的使用。
+JavaScript的对象是动态类型，你可以自由地给一个对象添加或删除属性。
+检测某对象是否拥有某一属性，可以用in操作符（继承得到的属性，也会返回为true）
+判断一个属性是否是xiaoming自身拥有的，而不是继承得到的，可以用hasOwnProperty()方法
+
+JavaScript把null、undefined、0、NaN和空字符串''视为false，其他值一概视为true，因此上述代码条件判断的结果是true。
+这就是为什么空串不用判空。
+
+
+变量
+在JavaScript中，使用等号=对变量进行赋值。可以把任意数据类型赋值给变量，同一个变量可以反复赋值，而且可以是不同类型的变量 ---虽然动态语言都可以这样写，但还是别作了
+
+与Java C 一样js中的字符串即字符数组，且为常量
+多行字符串
+不用写很多'\n' 可通过反引号`...`表示多行字符串
+`这是一个
+多行
+字符串`;
+
+模板字符串
+直接替换变量，使用如下：
+var name = '小明';
+var age = 20;
+var message = `你好, ${name}, 你今年${age}岁了!`;  注意，这里有2处，1. ${}  2. 最外层的符号不是‘’单引号，而是``反引号
+
+=====================================================
+Array 数组 --可改变Array的length 废技能
+直接给Array的length赋一个新的值会导致Array大小的变化。
+可通过下标索引复制，
+如果通过索引赋值时，索引超过了范围，同样会引起Array大小的变化：
+
+var arr = [1, 2, 3];
+arr[5] = 'x';
+arr; // arr变为[1, 2, 3, undefined, undefined, 'x']
+
+Array.slice 等同于String.substring ，不传参是复制
+通过push和pop向数组尾部 push和pop数据 
+通过unshift和shift向数组头部 增减数据
+
+splice
+splice()方法是修改Array的“万能方法”，它可以从指定的索引开始删除/添加 若干元素。
+
+concat
+concat()方法把当前的Array和另一个Array连接起来，并返回一个新的Array。
+
+join
+join()方法是一个非常实用的方法，它把当前Array的每个元素都用指定的字符串连接起来。
+
+js示例代码
+
+```
+<script type="text/javascript">
+    function addBtn() {
+        var button = document.createElement("button");
+        button.innerHTML = "btn2";
+
+        var body = document.getElementsByTagName("body")[0];
+        body.appendChild(button);
+
+        button.addEventListener ("click", function() {
+            alert("btn2 clicked");
+        });
+    }
+</script>
+
+<button onclick="addBtn()">btn1</button>
+
+```
+
+
+匿名函数
+```
+var abs = function (x) {
+    if (x >= 0) {
+        return x;
+    } else {
+        return -x;
+    }
+}; //需要在函数体末尾加一个;
+```
+匿名函数赋值给了变量abs，所以，通过变量abs就可以调用该函数。
+
+JavaScript允许传入任意个参数而不影响调用，因此传入的参数比定义的参数多也没有问题，无语。
+
+
+当然，如果有需要，可以限制参数类型
+if (typeof x !== 'number') {
+        throw 'Not a number';
+}
+
+此处的throw的异常也可以catch ，同java写法一样。
+
+avaScript还有一个免费赠送的关键字arguments，仅在函数内部有效，为参数列表。利用arguments，你可以获得调用者传入的所有参数，与函数本身原型中是否有参数无关。arguments最常用于判断传入参数的个数，就像java的不定参。
+
+如果不使用arguments，还可以使用rest不定参的方式。like this 
+```
+function foo(a, b, ...rest) {
+    console.log('a = ' + a);
+    console.log('b = ' + b);
+    console.log(rest);
+}
+如果个数对不上，rest参数会接收一个空数组。
+
+```
+
+
+======================================
+
+常用总结：
+  // getElementById id是唯一的  使用innerText
+  // getElementsByTagName 与 getElementsByClassName 返回的是HTMLCollection集合   每项使用innerText输出
+
+
+  XPath 是一门在 XML 文档中查找信息的语言。XPath 可用来在 XML 文档中对元素和属性进行遍历。
+  XPath 使用路径表达式在 XML 文档中进行导航，来选取XML文档中的节点或者节点集合。
+
+html语言
+<br>  折行    <hr> 横线
+
+
+
+

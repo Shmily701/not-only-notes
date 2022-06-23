@@ -1,0 +1,15 @@
+<script type="text/javascript">
+    function addBtn() {
+        var button = document.createElement("button");
+        button.innerHTML = "btn2";
+
+        var body = document.getElementsByTagName("body")[0];
+        body.appendChild(button);
+
+        button.addEventListener ("click", function() {
+            alert("btn2 clicked");
+        });
+    }
+</script>
+
+    <button onclick="addBtn()">btn1</button>
