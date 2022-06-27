@@ -1,0 +1,17 @@
+配置好环境变量，运行javac 等信息报错如下:
+Error occurred during initialization of VM 
+java/lang/NoClassDefFoundError:java/lang/Object 
+
+1. 确认环境变量配置正确
+2. 查看下lib和jre/lib文件中的rt和tools是否是打包后的形式
+如果看到的是rt.pack和tools.pack多半问题就出现在这里
+解决方案：将相应的文件解压为jar包即 rt.jar 和 tools.jar
+可以使用bin里面的unpack200工具
+解压方式 cd到unpack200工具的目录下 
+解压格式：unpack200 rt.pack rt.jar
+
+C:\Program Files\Java\jdk1.8.0_333\bin>unpack200 "C:\Program Files\Java\jdk1.8.0
+_333\lib\tools.pack" tools.jar
+
+C:\Program Files\Java\jdk1.8.0_333\bin>unpack200 "C:\Program Files\Java\jdk1.8.0
+_333\jre\lib\rt.pack" rt.jar

@@ -1,0 +1,4 @@
+第一次安装android studio时，弹出unable to access android sdk add-on list
+需要在android stuido 的安装目录下，找到idea.properties文件，用记事本等方式打开，
+在文件末尾加入
+disable.android.first.run=true 重启即可
