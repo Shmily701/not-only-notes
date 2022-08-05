@@ -29,6 +29,13 @@ Round-trip(往返延迟)
 
 ### 要免费todo
 
+
+Registered Name: https://zhile.io
+License Key: 48891cf209c6d32bf4
+
+在线激活码计算器
+https://www.zzzmode.com/mytools/charles/
+
 可以参考的文章
 https://zhuanlan.zhihu.com/p/407537666
 https://zhuanlan.zhihu.com/p/340973096
