@@ -1,0 +1,11 @@
+在TextView里，经常会设置图片 drawableTop drawableBottom drawableLeft drawableRight
+如果需要动态变化，在代码里设置
+```
+resultDrawable = getDrawable(R.drawable.open_success);
+// 一定在setCompoundDrawables 之前 setBounds 否则图片宽高为0 
+// 这里表示 宽高106dp
+resultDrawable.setBounds(0,0,ConvertUtils.dp2px(106),ConvertUtils.dp2px(106));
+// ltrb 相对位置
+tvResult.setCompoundDrawables(null, resultDrawable, null, null);
+
+```
