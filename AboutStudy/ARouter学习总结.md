@@ -40,6 +40,13 @@ build\generated\source\kapt\debug\com\alibaba\android\arouter\routes
 看到生成的文件ARouter$$Group$$account 
 如果这个文件未生成或不符合预期，那回头看配置是否哦正确。
 
+### 注意 当做组件化提取时，当从臃肿的appmodule中提取其他组件拆分时，记得更新RouterUrl.SetActivity的值  
+```
+不再是const val SetActivity = "/app/SetActivity"
+而是 const val SetActivity = "/setting/SetActivity"  是否生成成功，还是看上面的路径
+@Route(path = RouteUrl.SetActivity)
+```
+
 二、ARouter做到了组件的业务跳转解耦，简单易用，功能强大
 功能理解与罗列TODO
 
