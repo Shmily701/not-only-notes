@@ -101,3 +101,19 @@ Koltin中一切方法都是表达式，也就是都有返回值，那么正常�
 
 
 ```
+
+
+
+```
+fun <T> BaseViewModel.request(
+    block: suspend () -> BaseResponse<T>,
+    success: (T) -> Unit,
+    error: (AppException) -> Unit = {},
+    isShowDialog: Boolean = false,
+    loadingMessage: String = "请求网络中..."
+)
+
+```
+
+T类型，是block函数返回值BaseResponse<T>的包裹类型，也是参数success【函数型参数】参数T的类型，返回值是Unit。
+所以success接收的参数就是T

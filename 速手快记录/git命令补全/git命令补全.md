@@ -2,3 +2,8 @@
 2. 将下载好的文件复制到你的git目录中（找不到输入where git，在windows下一般放于git\Git\etc文件下）
 3. 在ect文件夹下找到bash.bashrc文件，打开文件，在文件末尾添加source~/.git-completion.bash
 4. 完成后git st 再按tab tab 验证下生效性
+
+
+
+项目出现编译报错时
+出现编译报错时 使用gradlew taskname --stacktrace 命令可看到详细错误

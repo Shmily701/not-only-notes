@@ -1,0 +1,2 @@
+  android:lineSpacingExtra="3dp" 行间距
+  android:letterSpacing="0.5" 列间距
