@@ -1,0 +1,22 @@
+
+
+1. 没有透明的png改成JPG
+
+2. 有透明度只是圆角透明的 直接改JPG丢失透明 然后在代码里用roundImageView去显示圆角
+
+3. 圆角角标不清楚的，问下设计同学
+
+工具用的就算win11自带的画图
+
+// 设置View圆角radius
+    fun setRadius(view : View, radius:Float){
+        view.run {
+            outlineProvider = object : ViewOutlineProvider() {
+                override fun getOutline(view: View, outline: Outline) {
+                    // 设置圆角率为
+                    outline.setRoundRect(0, 0, view.width, view.height, radius)
+                }
+            }
+            clipToOutline = true
+        }
+    }
