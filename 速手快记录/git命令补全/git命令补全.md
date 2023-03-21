@@ -7,3 +7,6 @@
 
 项目出现编译报错时
 出现编译报错时 使用gradlew taskname --stacktrace 命令可看到详细错误
+
+
+compileSdkVersion 升级31后   JdkJavaCompiler  报错

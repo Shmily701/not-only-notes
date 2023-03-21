@@ -1,0 +1,29 @@
+基于 MVPArms 开发过开源的 APP ：https://github.com/JessYanCoding/MVPArms/blob/25c595ebb79a2e42ee74f0123fd238ca95b261b9/CONTRIBUTING_APP.md
+
+JetpackMvvm：https://github.com/hegaojian/JetpackMvvm
+
+是让人耳目一新的 Jetpack MVVM 精讲啊！
+https://juejin.cn/post/6844903976240939021
+
+一个 Android MVVM 组件化架构框架
+https://juejin.cn/post/6866628586414997512
+
+Gradle 与 Android 构建入门
+https://juejin.cn/post/6844904121217056782
+
+华为HMS Scankit与Zxing 到底谁强谁弱今天终于有了结论
+https://blog.csdn.net/weixin_47546655/article/details/107847770
+
+基于OpenCV开源的微信二维码引擎移植的Android扫码识别库
+https://www.wanandroid.com/blog/show/3041
+
+https://gitee.com/tianji_luhaichuan/pay/tree/master/wxpay-sdk-scala
+
+
+banner
+["webView","{\"url\":\"http://testevent.hengyirong.com/tk3/order/contract?iCode=T1013070&productNum=S000026P0005\"}"]
+
+瓷片区
+["webView","{\"url\":\"http://yjh2bslwbglq2dc4.mikecrm.com/Bk2Ktdy\"}"]
+["login"]
+
