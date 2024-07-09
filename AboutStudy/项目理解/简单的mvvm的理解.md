@@ -12,7 +12,7 @@
 View与ViewModel的绑定  其中xml扮演了View的角色
 
 
-### 以恒生活appLoginActivity为例
+### 以app的appLoginActivity为例
 >1. 在activity_login.xml中声明<data> <variable>标签并指定viewmodel为LoginViewModel，需要bind的地方通过bind指定 
 eg：点击事件等属性的引用可以通过viewmodel.smsVisible 直接类.属性的方式来为xml的布局赋值。
 
